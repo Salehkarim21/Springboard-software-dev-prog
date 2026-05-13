@@ -12,3 +12,4 @@ Absolute path is the path that starts from teh root and give entire path locatio
 Relative the path from current directory
 A flag is synopsis that adds to the function of teh commnd, ex -a -l -r
 -r will remove the empty folder, -f will force remove empty or not. 
+

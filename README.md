@@ -11,4 +11,4 @@ terminal is command line interface to the shell, the shell is the program that d
 Absolute path is the path that starts from teh root and give entire path location of the folder/file
 Relative the path from current directory
 A flag is synopsis that adds to the function of teh commnd, ex -a -l -r
--r will remove the empty folder, -f will force remove empty or not.
+-r will remove the empty folder, -f will force remove empty or not. 

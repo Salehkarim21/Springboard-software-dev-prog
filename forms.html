@@ -19,6 +19,7 @@
 
     <form>
         <button type="button">Our <b>First</b> Button</button>
+
         <h2>Register</h2>
         <input type="email" placeholder="Email" name="email" required>
         <input type="password" placeholder="password" name="password" required>
@@ -27,8 +28,32 @@
         <input type="radio" name="shirt-size" value="Small"> S <br>
         <input type="radio" name="shirt-size" value="Medium"> Mm <br>
         <input type="radio" name="shirt-size" value="Large"> L <br>
+
         <button type="submit-form">Submit Form</button>
         <!-- <input type="submit" value="Go" -->
+    </form>
+    <h2> Other Input Form</h2>
+    <form>
+       Pick a color: <input type="color" name="color">
+       Pick a date: <input type="date" name="Birthday">
+       Pick a time: <input type="time" name="time"> <br>
+       Pick level of happiness: <input type="range" name="Range of happiness" min="1" max="15" step="2"> <hr>
+       
+       Select a state:
+       <select name="state">
+        <option value="--">Select an S</option>
+        <option value="TX">Texas</option>
+        <option value="MI">Michigan</option>
+        <option value="CA">Calrifornia</option>
+        <option value="OH">Ohio</option>
+       </select>
+       <br>
+       Please draft and exquisit essay:
+       <textarea name="Essay" cols="30" rows="5" minlength="4" maxlength="50" placeholder="Enter your essay here..."></textarea>
+       
+       
+       <button type="submit">Submit Form</button>
+
     </form>
 </body>
 </html>

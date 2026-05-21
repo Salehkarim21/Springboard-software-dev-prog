@@ -30,3 +30,15 @@
         
         <button type="submit">Submit</button>
     </form>
+    <input type="file">
+<!-- to upload a file we need a file input, this kind of input will not let us upload the file -->
+ 
+<!-- to upload a file we need to use this special attribute "enctype" this is what we do when we want to send a big size file data-->
+
+
+<form method="post" enctype="multipart/form-data">
+    <label> this will not actually work but go ahead and pick a file!</label>
+
+    <input type="file" name="file-upload">
+    <button type="submit">Upload File</button>
+</body>

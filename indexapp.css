@@ -1,0 +1,26 @@
+/* * {
+    text-decoration: underline magenta wavy;
+    border: 2px solid hsl(180, 100%, 50%, 0.5);
+}
+this will select all text, it is not commonly used because we normally do not want all text to be the same. */
+
+#logo {
+    width: 75px;
+}
+
+img {
+    width: 300px;
+}
+h1 {
+    color: purple;
+}
+
+h2 {
+    color: teal;
+}
+
+.poem{
+    width: 500px;
+    color: gray;
+    
+}

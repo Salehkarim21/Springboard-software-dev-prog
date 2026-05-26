@@ -45,14 +45,39 @@ h2 + h3 {
 }
 
 .poem > p {
-    color: red;
+    color: rgb(12, 12, 12);
     font-style: normal;
 }
 
 nav a:hover {
-    color:aquamarine;
+    color:rgb(111, 236, 102);
     text-decoration: underline;
 }
 input:focus {
     background-color: pink;
 }
+
+/* .poem section p::first-letter {
+    font-size: 2em;
+    color: rgb(255, 0, 13);
+} */
+
+
+.poem section p:first-of-type::first-letter {
+    font-size: 2em;
+}
+
+input:focus::placeholder {
+    color: rgb(13, 159, 221);
+}
+
+
+/* attribute selectors  the type=text is common but the *= not really unless you need it*/
+input[type="text"] {
+    background-color: rgb(255, 255, 0);
+}
+
+img[src*="unsplash"] {
+    width: 550px
+}
+

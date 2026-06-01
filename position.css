@@ -1,0 +1,38 @@
+h1 {
+    background-color: lightgreen;
+    width: 25%;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+}
+div {
+    width: 50%;
+    height: 500px;
+    border: 2px solid red;
+    margin: 0 auto;
+    position: relative;
+    top: 100px;
+}
+
+/* if we comment out the position in the div it will remove the word from the box of teh div, it will show it relative to where the h1 position was*/
+
+p {
+    font-size: 2em;
+}
+
+nav {
+    background-color: olive;
+    color: white;
+    height: 80px; 
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+
+}
+nav a {
+    color: white;
+    font-size: 1.5em;
+   
+}

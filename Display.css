@@ -1,0 +1,47 @@
+h1 {
+    background-color: lightcoral;
+    width: 50%;
+    height: 300px;
+    margin: 2em;
+    Display: inline;
+}
+/* 
+a {
+    background-color: lightseagreen;
+    width: 300px;
+    height: 300px;
+    margin: 2em; 
+    display: block;
+
+    the hight and width are not going to work due to the properties of this, but when you add display the properties change and they will display the selceted settings 
+
+}  */
+
+#container {
+    border: 1px solid black;
+    width: 50%;
+    margin: 0 auto;
+}
+
+#container section {
+    box-sizing: border-box;
+    width: 50%;
+    border: 1px solid red;
+    display: inline-block;
+    text-align: center;
+}
+body {
+    margin: 0;
+}
+nav {
+    height: 80px;
+    background-color: #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    font-size: 2em;
+    margin: 0 1em;
+}

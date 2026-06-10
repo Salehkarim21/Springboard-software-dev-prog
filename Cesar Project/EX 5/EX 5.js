@@ -1,10 +1,10 @@
 const guests = ["ANTONY", "CICERO", "CASSIUS", "CLEOPATRA"];
 
-guests.unshift("BRUTUS"); //will add BRUTUS to the beginning of the array.
+guests.unshift("BRUTUS"); //will add "BRUTUS" to the beginning of the array.
 
-guests.push("AUGUSTUS", "LUCIA"); //will add AUGUSTUS and LUCIA to the end of the array.
+guests.push("AUGUSTUS", "LUCIA"); //will add "AUGUSTUS" and "LUCIA" to the end of the array.
 
-guests.includes("SPARTACUS"); //will check if SPARTACUS is in the array and return true or false.
+guests.includes("SPARTACUS"); //will check if "SPARTACUS" is in the array and return true or false.
 
 const spartacusIndex = guests.indexOf("SPARTACUS"); //will return -1 since "SPARTACUS" it is not found in the array.
 

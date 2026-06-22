@@ -12,8 +12,6 @@ function isEncryptLetter (letter, shift) { // This function encrypts a single le
   return alphabet[shiftedIndex].toUpperCase(); // To return the encrypted letter in uppercase
 }
 
-
-
 function isEncryptMessage (word, shift) { // This function encrypts a message by shifting each letter by the specified amount
   let encryptedMessage = ""; // To store the encrypted message
   for (let i = 0; i < word.length; i++) { // To iterate through each letter in the word

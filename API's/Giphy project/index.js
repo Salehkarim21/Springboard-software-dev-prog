@@ -7,7 +7,7 @@ async function giphyRequest() {
     console.log(response.data);
     const img = document.querySelector("#Giphy");
   img.src = response.data.data[0].images.original.url; 
-  }
+}  
   giphyRequest();
 
 async function getGiphy(query) {
@@ -19,9 +19,8 @@ async function getGiphy(query) {
   } catch (e) {
     alert("GIPHY NOT FOUND!");
     giphyRequest();
-  }
-}
-
+  } 
+}  
 
   const form = document.querySelector('#searchform');
 form.addEventListener("submit", function (e) {
@@ -30,4 +29,15 @@ form.addEventListener("submit", function (e) {
   console.log("Submit!");
   getGiphy(input.value);
   input.value = '';
-})
+})                      
+
+
+const removeBtn = document.querySelector("#clearGiphy");
+const gifContainer = document.querySelector("#gif-container");
+
+removeBtn.addEventListener("click", function () {
+    gifContainer.innerHTML = "";
+    
+});
+
+

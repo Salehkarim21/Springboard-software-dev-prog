@@ -19,7 +19,6 @@ $(function() {
             let deckId = data.deck_id;
             return $.getJSON(`${baseURL}/${deckId}/draw/`);
         })
-
         .then(data => {
             let secondCard = data.cards[0];
             [firstCard, secondCard].forEach(function(card) {
@@ -56,4 +55,4 @@ $(function() {
             );
             if (data.remaining === 0) $btn.remove();
         });
-    }
+    });

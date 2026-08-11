@@ -1,7 +1,7 @@
 
 $(function() {
     let baseURL = 'https://deckofcardsapi.com/api/deck';
-    });
+
 
 //1 single card req
 
@@ -56,3 +56,4 @@ $(function() {
             if (data.remaining === 0) $btn.remove();
         });
     });
+});

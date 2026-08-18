@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 node_modules
 app.js
 
@@ -6,3 +7,13 @@ expressErro.js
 package-lock.json
 
 package.json
+=======
+node_modules
+app.js
+
+expressErro.js
+
+package-lock.json
+
+package.json
+>>>>>>> 7a36318 (ignore)

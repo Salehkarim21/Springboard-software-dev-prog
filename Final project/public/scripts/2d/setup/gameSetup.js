@@ -116,6 +116,7 @@ export function initializeGame() {
 
     if (dom.clearButton) {
       dom.clearButton.addEventListener('click', function () {
+        Board.clear();
         // Step 9.1: Reset the board to initial game state.
       });
     }

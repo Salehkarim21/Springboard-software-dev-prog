@@ -5,6 +5,14 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+=======
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+>>>>>>> 7a36318 (ignore)
 lerna-debug.log*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)

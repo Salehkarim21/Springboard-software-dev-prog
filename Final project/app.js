@@ -92,9 +92,11 @@ app.post('/api/checkers/2d/cpu-move', withThrottle(async (req, res) => {
 
 app.get('/', (req, res) => {
 	// Step 11.1: Redirect the site root to the 2D game.
+	res.redirect('/checkers/2d');
 });
 
 app.listen(PORT, () => {
 	// Step 12.1: Start the Express server on the configured port.
 	// Step 12.2: Log helpful startup information, such as URLs and API key availability.
+	console.log(`Checker game Server is running on http://localhost:${PORT}/Checkers/2d (2D) and /Checkers/3d (3D)`);
 });

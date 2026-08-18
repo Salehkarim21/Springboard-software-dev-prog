@@ -1,5 +1,6 @@
 import { getGameDomRefs } from './domRefs.js';
 import { createBoardController } from '../logic/boardLogic.js';
+// import { join } from 'node:path';
 
 export function initializeGame() {
     const dom = getGameDomRefs();
@@ -121,17 +122,21 @@ export function initializeGame() {
 
     document.addEventListener('click', function (event) {
       const pieceEl = event.target.closest('.piece');
-      if (!pieceEl) return;
+      if (!pieceEl) { console.log('piece not here');
+        return;
+      }
 
       if (Board.cpuEnabled && Board.playerTurn == 2) return;
 
       let selected = false;
       const parentClass = pieceEl.parentElement.className.split(' ')[0];
       const isPlayersTurn = parentClass == 'player' + Board.playerTurn + 'pieces';
+
       if (isPlayersTurn) {
         if (!Board.continuousjump && pieces[pieceEl.id].allowedtomove) {
           if (pieceEl.classList.contains('selected')) selected = true;
           clearSelectedPieces();
+        }
           if (!selected) {
             pieceEl.classList.add('selected');
           }
@@ -141,8 +146,7 @@ export function initializeGame() {
           const message = !Board.continuousjump ? exist : continuous;
           console.log(message);
         }
-      }
-    });
+      });
 
     document.addEventListener('click', function (event) {
       /*
@@ -154,6 +158,43 @@ export function initializeGame() {
       Step 10.6: Handle regular moves when jumps are not forced.
       Step 10.7: Switch turns after successful move.
       */
-    });
 
+      const tileEl = event.target.closest('.tile');
+      if (!tileEl) { console.log('clicked on tile not on space to move to'); return; }
+
+      if (Board.cpuEnabled && Board.playerTurn == 2) return;
+
+      // if not then its my turn.
+
+      const selectedElement = document.querySelector('.piece.selected');
+      if (!selectedElement) return;
+
+      const tileID = tileEl.id.replace(/tile/, '');
+      const tile = tiles[tileID];
+      const piece = pieces[selectedElement.id];
+      const inRange = tile.inRange(piece);
+      
+      if (inRange === "wrong") return; // so it does not move
+
+      if (inRange === "jump") {
+        if (piece.opponentJump(tile)){ piece.move(tile);
+
+            if (piece.canJumpAny()) {
+            piece.element.classList.add('selected');
+            Board.continuousjump = true;
+          } else {
+            Board.changePlayerTurn();
+          }
+
+        }
+
+      } else if (inRange === "regular" && !Board.jumpexist) {
+        if (!piece.canJumpAny()){
+          piece.move(tile);
+        Board.changePlayerTurn();
+      } else {
+        alert("You must jump!");
+      }
+    }
+    });
 }

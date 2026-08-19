@@ -125,11 +125,13 @@ export function initializeGame() {
         // Step 7.3: Handle errors and show an error status message.
         try {
           const state = Board.buildSerializableState();
-          const response = await persistState(state);
-          setSaveStatus(`Game saved at ${new Date(response.savedAt).toLocaleTimeString()}.`, false);
+          const persisted = await persistState(state);
+          const persistedAt = persisted && persisted.savedAt ? persisted.savedAt : state.savedAt;
+          const savedDate = new Date(persistedAt).toLocaleString();
+          setSaveStatus(`Game saved at: ${savedDate}`, false);
         } catch (error) {
           console.error(error);
-          setSaveStatus('Unable to save the game.', true);
+          setSaveStatus('Unable to save the game!', true);
         }
       });
     }

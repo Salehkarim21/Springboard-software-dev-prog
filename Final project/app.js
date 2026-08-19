@@ -82,7 +82,7 @@ app.get('/api/checkers/2d/save', async (req, res) => {
 		if (error.code === 'ENOENT') {
 			return res.status(404).json({message: "No saved game found."});
 		}
-		return res.status(500).json({message: "Failed to load game."});
+		return res.status(500).json({message: "Failed to load saved game."});
 	}
 });
 

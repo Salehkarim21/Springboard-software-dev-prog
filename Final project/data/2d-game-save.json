@@ -1,0 +1,256 @@
+{
+  "state": {
+    "board": [
+      [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        2,
+        0,
+        2,
+        0,
+        2,
+        0
+      ]
+    ],
+    "score": {
+      "player1": 6,
+      "player2": 6
+    },
+    "playerTurn": 2,
+    "cpuEnabled": false,
+    "cpuDifficulty": "easy",
+    "showCpuAnimation": true,
+    "winnerText": "",
+    "pieces": [
+      {
+        "id": 0,
+        "position": [
+          0,
+          1
+        ],
+        "king": false
+      },
+      {
+        "id": 1,
+        "position": [
+          0,
+          3
+        ],
+        "king": false
+      },
+      {
+        "id": 2,
+        "position": [
+          0,
+          5
+        ],
+        "king": false
+      },
+      {
+        "id": 3,
+        "position": [
+          0,
+          7
+        ],
+        "king": false
+      },
+      {
+        "id": 4,
+        "position": [
+          1,
+          0
+        ],
+        "king": false
+      },
+      {
+        "id": 5,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 6,
+        "position": [
+          3,
+          6
+        ],
+        "king": false
+      },
+      {
+        "id": 7,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 8,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 9,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 10,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 11,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 12,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 13,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 14,
+        "position": [
+          5,
+          4
+        ],
+        "king": false
+      },
+      {
+        "id": 15,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 16,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 17,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 18,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 19,
+        "position": [
+          6,
+          7
+        ],
+        "king": false
+      },
+      {
+        "id": 20,
+        "position": [
+          7,
+          0
+        ],
+        "king": false
+      },
+      {
+        "id": 21,
+        "position": [
+          7,
+          2
+        ],
+        "king": false
+      },
+      {
+        "id": 22,
+        "position": [
+          7,
+          4
+        ],
+        "king": false
+      },
+      {
+        "id": 23,
+        "position": [
+          7,
+          6
+        ],
+        "king": false
+      }
+    ],
+    "savedAt": "2026-08-19T03:21:20.014Z",
+    "version": 1
+  },
+  "savedAt": "2026-08-19T03:21:20.081Z"
+}

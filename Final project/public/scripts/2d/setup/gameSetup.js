@@ -1,5 +1,6 @@
 import { getGameDomRefs } from './domRefs.js';
 import { createBoardController } from '../logic/boardLogic.js';
+
 // import { join } from 'node:path';
 
 export function initializeGame() {
@@ -31,15 +32,25 @@ export function initializeGame() {
 
     function setSaveStatus(message, isError) {
       if (!dom.saveStatus) return;
-      // Step 1.1: Set status text for save/resume actions.
-      // Step 1.2: Use error color when isError is true, otherwise use normal status color.
+      dom.saveStatus.textContent = message;
+      dom.saveStatus.style.color = isError ? "red" : "green";
+
+      // dom.saveStatus.classList.toggle('error', Boolean(isError));
     }
 
     async function persistState(state) {
       // Step 2.1: POST { state } to /api/checkers/2d/save.
       // Step 2.2: Throw if response is not OK.
       // Step 2.3: Return parsed JSON payload from the save API.
-      return null;
+      const response = await fetch("/api/checkers/2d/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify({ state: state})
+      });
+      if (!response.ok) {
+        throw new Error(`Save request failed with status: ${response.status}`);
+      }
+      return response.json();
     }
 
     async function fetchSavedState() {
@@ -47,26 +58,36 @@ export function initializeGame() {
       // Step 3.2: Return null for 404 (no save exists).
       // Step 3.3: Throw for other non-OK responses.
       // Step 3.4: Return payload.state if present.
-      return null;
+      const response = await fetch("/api/checkers/2d/save");
+      if (response.status === 404) {
+        return null;
+      }
+      if (!response.ok) {
+        throw new Error(`Load request failed with status ${response.status}`);
+      }
+      const payload = await response.json();
+      return payload && payload.state ? payload.state : null;
+        
     }
 
     function syncPlayModeControls() {
       const twoPlayerMode = dom.cpuToggle ? dom.cpuToggle.checked : false;
-      // Step 4.1: Map toggle value to Board.cpuEnabled.
+      Board.cpuEnabled = twoPlayerMode;
       if (dom.cpuDifficultySelect) {
-        // Step 4.2: Disable difficulty selector when two-player mode is enabled.
+        dom.cpuDifficultySelect.disabled = !twoPlayerMode;
       }
     }
 
     function syncControlsFromBoardState() {
       if (dom.cpuToggle) {
-        // Step 5.1: Reflect Board.cpuEnabled in the CPU toggle UI.
+        dom.cpuToggle.checked = Board.cpuEnabled;
       }
       if (dom.cpuDifficultySelect) {
-        // Step 5.2: Reflect Board.cpuDifficulty and enabled/disabled state in dropdown.
+        dom.cpuDifficultySelect.value = Board.cpuDifficulty;
+        dom.cpuDifficultySelect.disabled = !Board.cpuEnabled;
       }
       if (dom.animationToggle) {
-        // Step 5.3: Reflect Board.showCpuAnimation in animation toggle UI.
+        dom.animationToggle.checked = Board.showCpuAnimation;
       }
     }
 
@@ -102,6 +123,14 @@ export function initializeGame() {
         // Step 7.1: Build serializable board state and persist it via API.
         // Step 7.2: Show success status with saved timestamp.
         // Step 7.3: Handle errors and show an error status message.
+        try {
+          const state = Board.buildSerializableState();
+          const response = await persistState(state);
+          setSaveStatus(`Game saved at ${new Date(response.savedAt).toLocaleTimeString()}.`, false);
+        } catch (error) {
+          console.error(error);
+          setSaveStatus('Unable to save the game.', true);
+        }
       });
     }
 
@@ -111,6 +140,25 @@ export function initializeGame() {
         // Step 8.2: Validate and apply loaded state to the board.
         // Step 8.3: Sync controls after restore and show status message.
         // Step 8.4: Handle errors and show an error status message.
+        try {
+          const state = await fetchSavedState();
+          if (!state) {
+            setSaveStatus('No saved game found', true);
+            return;
+          }
+          const wasApplied = Board.applySerializableState(state);
+          if (!wasApplied) {
+            setSaveStatus('Saved game data is invalid', true);
+            return;
+          }
+          clearSelectedPieces();
+          syncControlsFromBoardState();
+          const saveDate = state.savedAt ? new Date(state.savedAt).toDateString() : "unknown time";
+          setSaveStatus(`Resumed saved game from ${saveDate}!`, false);
+        } catch (error) {
+          console.error(error);
+          setSaveStatus("Unable to resume saved game!", true);
+        }
       });
     }
 
@@ -137,7 +185,6 @@ export function initializeGame() {
         if (!Board.continuousjump && pieces[pieceEl.id].allowedtomove) {
           if (pieceEl.classList.contains('selected')) selected = true;
           clearSelectedPieces();
-        }
           if (!selected) {
             pieceEl.classList.add('selected');
           }
@@ -146,6 +193,8 @@ export function initializeGame() {
           const continuous = 'continuous jump exist, you have to jump the same piece';
           const message = !Board.continuousjump ? exist : continuous;
           console.log(message);
+        }
+        
         }
       });
 

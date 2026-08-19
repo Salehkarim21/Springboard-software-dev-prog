@@ -37,14 +37,19 @@ function withThrottle(handler) {
 
 async function ensureSavesDirectory() {
 	// Step 3.1: Create the save directory if it does not already exist.
+	await fs.mkdir(savesDir, {recursive:true});
 }
 
 function isValid2dGameState(state) {
-	// Step 4.1: Confirm state is an object.
-	// Step 4.2: Confirm board is an 8x8 array.
-	// Step 4.3: Confirm pieces is an array.
-	// Step 4.4: Confirm score, if present, is an object.
-	return false;
+	return Boolean(
+		state &&
+		Array.isArray(state.board) &&
+		state.board.length === 8 &&
+		state.board.every((row) => Array.isArray(row) && row.length === 8) &&
+		Array.isArray(state.pieces) &&
+		state.pieces.length === 24 &&
+		(!state.score || typeof state.score === 'object')
+	);
 }
 
 app.use(express.json({ limit: '1mb' }));
@@ -69,6 +74,16 @@ app.get('/api/checkers/2d/save', async (req, res) => {
 	// Step 8.2: Return the parsed payload.
 	// Step 8.3: Return 404 when no save exists.
 	// Step 8.4: Return 500 for other read/parse errors.
+	try {
+		const raw = await fs.readFile(twoDGameSavePath, "utf-8");
+		const payload = JSON.parse(raw);
+		return res.json(payload);
+	} catch (error) {
+		if (error.code === 'ENOENT') {
+			return res.status(404).json({message: "No saved game found."});
+		}
+		return res.status(500).json({message: "Failed to load game."});
+	}
 });
 
 app.post('/api/checkers/2d/save', async (req, res) => {
@@ -78,6 +93,26 @@ app.post('/api/checkers/2d/save', async (req, res) => {
 	// Step 9.4: Ensure save directory exists.
 	// Step 9.5: Write JSON payload to disk.
 	// Step 9.6: Return created payload or 500 on failure.
+	console.log("Hit the save route");
+	const state = req.body.state;
+	if (!isValid2dGameState(state)) {
+		return res.status(400).json({message: "Invalid game state."});
+	}
+
+	const payload = {
+		state: state,
+		savedAt: new Date().toISOString()
+	};
+
+	try {
+		await ensureSavesDirectory();
+		await fs.writeFile(twoDGameSavePath, JSON.stringify(payload, null, 2), 'utf-8');
+		return res.status(201).json(payload);
+
+	} catch (error) {
+		return res.status(500).json({message: "Failed to save game state."});
+	}
+
 });
 
 app.post('/api/checkers/2d/cpu-move', withThrottle(async (req, res) => {
@@ -88,6 +123,8 @@ app.post('/api/checkers/2d/cpu-move', withThrottle(async (req, res) => {
 	// Step 10.5: Accept either a moveId or from/to coordinate response.
 	// Step 10.6: Return the selected move payload to the client.
 	// Step 10.7: Return appropriate error codes/messages for invalid payloads or API failures.
+	// console.log("Hit the CPU move");
+	// res.json({message: "ok"});
 }));
 
 app.get('/', (req, res) => {

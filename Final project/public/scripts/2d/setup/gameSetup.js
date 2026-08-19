@@ -59,10 +59,10 @@ export function initializeGame() {
       // Step 3.3: Throw for other non-OK responses.
       // Step 3.4: Return payload.state if present.
       const response = await fetch("/api/checkers/2d/save");
-      if (response.status === 404) {
-        return null;
-      }
+      if (response.status === 404) null;
       if (!response.ok) {
+        const errorResponse = await response.json();
+        console.log(errorResponse.message);
         throw new Error(`Load request failed with status ${response.status}`);
       }
       const payload = await response.json();

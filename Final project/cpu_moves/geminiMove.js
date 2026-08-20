@@ -37,11 +37,50 @@ function buildPrompt(state) {
   // Step 4: Ask Gemini for the next move only.
   // Step 5: Instruct Gemini to return strict JSON in this shape: {"from":[row,col],"to":[row,col]}.
   // Step 6: Return the completed prompt string.
-  return '';
+  return [
+    "You are playing a game of Checkers as Black.",
+    "Here is the current 8x8 board state where 'B' is Black, 'W' is White, 'BK' is Black King, 'WK' is White King, and '.' is empty.",
+    '',
+    boardState,
+    '',
+    'Suggest the next checkers move for Black.',
+    'Return strict JSON only: {"from":[row,col],"to":[row,col]}',
+    'Rows and columns are 0-based indices.'
+
+  ].json('\n');
 }
 
 // Call Gemini with the current board state and return the move coordinates it suggests.
 export async function chooseGeminiMove({ state, legalMoves, apiKey }) {
+  if (!apiKey) {
+    throw new Error('GEMINI_API_KEY is not configured.');
+  }
+  const prompt = buildPrompt(state);
+  try {
+    const ai = new GoogleGenAI({apiKey: apiKey});
+    console.log('GEMINI PROMPT:\n', prompt);
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.1-flash-lite-preview',
+      contents: prompt,
+    });
+    console.log(`Gemini response: ${JSON.stringify(response)}`);
+    const nextMoveResponseText = response.candidates?.[0]?.content?.parts?.[0]?.text;
+    const nextMoveResponseObject = JSON.parse(nextMoveResponseText);
+
+    if (
+      nextMoveResponseObject
+      && Array.isArray(nextMoveResponseObject.from)
+      && Array.isArray(nextMoveResponseObject.to)
+      && nextMoveResponseObject.from.length === 2
+      && nextMoveResponseObject.to.length === 2
+    ) {
+      return nextMoveResponseObject;
+    }
+    throw new Error(`Gemini returned invalid move payload: ${nextMoveResponseText}`);
+  } catch (error) {
+    throw error;
+  }
+}
   // Step 1: Validate that GEMINI_API_KEY is available before making a request.
   // Step 2: Build the prompt from the current board state.
   // Step 3: Create a GoogleGenAI client with the API key.
@@ -51,8 +90,12 @@ export async function chooseGeminiMove({ state, legalMoves, apiKey }) {
   // Step 7: Validate that the JSON contains `from` and `to` arrays.
   // Step 8: Return the parsed move object so the rest of the game can use it.
   // Step 9: Throw a helpful error if the API key is missing or the response is invalid.
-  return null;
-}
+ 
+
+
+
+
+  
 // Debug helper blueprint: list available Gemini models for troubleshooting.
 // async function listModels(client) {
 //     try {

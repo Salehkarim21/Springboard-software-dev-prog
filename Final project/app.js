@@ -6,6 +6,11 @@ import { fileURLToPath } from 'node:url';
 
 import express from 'express';
 import { resolveCpuMove } from './cpu_moves/index.js';
+import {
+	buildLegalMoveIndex,
+	isCoordinateMove,
+	resolveMoveIdFromCoordinates
+} from './api_helpers/cpuMoveHelpers.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -20,18 +25,23 @@ let cpuMoveInProgress = false;
 const cpuMoveQueue = [];
 
 async function processCpuMoveQueue() {
-	// Step 1.1: Exit early when a CPU move is already being processed.
-	// Step 1.2: Pull the next queued CPU request.
-	// Step 1.3: Run the queued handler.
-	// Step 1.4: Clear the in-progress flag and continue with the next queued request.
+	if (cpuMoveInProgress || cpuMoveQueue.length === 0) return;
+	cpuMoveInProgress = true;
+	const { handler } = cpuMoveQueue.shift();
+	try {
+		await handler();
+	} finally {
+		cpuMoveInProgress = false;
+		if (cpuMoveQueue.length > 0) {
+			setImmediate(processCpuMoveQueue);
+		}
+	}
 }
 
 function withThrottle(handler) {
-	// Step 2.1: Return a wrapper function for route handlers.
-	// Step 2.2: Push incoming request handlers into the CPU queue.
-	// Step 2.3: Start queue processing.
 	return (req, res) => {
-		// TODO: Queue the route handler and start processing.
+		cpuMoveQueue.push({ handler: () => handler(req, res) });
+		processCpuMoveQueue();
 	};
 }
 
@@ -58,6 +68,7 @@ app.use(express.json({ limit: '1mb' }));
 app.use(express.static(path.join(rootDir, "public")));
 
 app.get('/checkers', (req, res) => {
+	res.redirect('/checkers/2d');
 	// Step 5.1: Redirect the base checkers route to the 2D game.
 });
 
@@ -66,14 +77,12 @@ app.get('/checkers/2d', (req, res) => {
 });
 
 app.get('/checkers/3d', (req, res) => {
+	res.sendFile(path.join(rootDir, "views", "3d.html"))
 	// Step 7.1: Send the 3D game HTML file.
 });
 
 app.get('/api/checkers/2d/save', async (req, res) => {
-	// Step 8.1: Read saved game JSON from disk.
-	// Step 8.2: Return the parsed payload.
-	// Step 8.3: Return 404 when no save exists.
-	// Step 8.4: Return 500 for other read/parse errors.
+	
 	try {
 		const raw = await fs.readFile(twoDGameSavePath, "utf-8");
 		const payload = JSON.parse(raw);
@@ -87,16 +96,11 @@ app.get('/api/checkers/2d/save', async (req, res) => {
 });
 
 app.post('/api/checkers/2d/save', async (req, res) => {
-	// Step 9.1: Read state from request body.
-	// Step 9.2: Validate incoming game state.
-	// Step 9.3: Add savedAt timestamp.
-	// Step 9.4: Ensure save directory exists.
-	// Step 9.5: Write JSON payload to disk.
-	// Step 9.6: Return created payload or 500 on failure.
-	console.log("Hit the save route");
+	
+	// console.log("Hit the save route");
 	const state = req.body.state;
 	if (!isValid2dGameState(state)) {
-		return res.status(400).json({message: "Invalid game state."});
+		return res.status(400).json({message: "Invalid game state payload."});
 	}
 
 	const payload = {
@@ -126,9 +130,9 @@ app.post('/api/checkers/2d/cpu-move', withThrottle(async (req, res) => {
 	// console.log("Hit the CPU move");
 	const { State, legalMoves, difficulty } = req.body;
 
-	if (difficulty === "hard") {
-		return res.status(500).json({ message: "Hard dificulty not implemented yet"});
-	}
+	// if (difficulty === "hard") {
+	// 	return res.status(500).json({ message: "Hard dificulty not implemented yet"});
+	// }
 	// console.log(`State:` , state)
 	// console.log(`Game difficulty: ${difficulty}`);
 	if (!isValid2dGameState(state)|| !Array.isArray(legalMoves) || legalMoves.length === 0) {
@@ -165,18 +169,18 @@ app.post('/api/checkers/2d/cpu-move', withThrottle(async (req, res) => {
 			message,
 			string(error)
 		);
+		return res.status(statusCode).json({ message });
 
 	 }
-	// return res.json({message: "Hit the cpu move endpoint"});
+	
 }));
 
 app.get('/', (req, res) => {
-	// Step 11.1: Redirect the site root to the 2D game.
+	
 	res.redirect('/checkers/2d');
 });
 
 app.listen(PORT, () => {
-	// Step 12.1: Start the Express server on the configured port.
-	// Step 12.2: Log helpful startup information, such as URLs and API key availability.
+	console.log(`Checkers server running at http://localhost:${PORT}/checkers/2d (2D) and /checkers/3d (3D)`);
 	console.log(`Checker game Server is running on http://localhost:${PORT}/Checkers/2d (2D) and /Checkers/3d (3D)`);
 });

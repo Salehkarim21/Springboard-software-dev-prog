@@ -8,15 +8,13 @@ export function createBoardController(dom) {
 
     // Optional UI helper: toggle toolbar loading state while waiting for CPU/API move response.
     function setCpuLoading(isLoading) {
-      // Blueprint: Re-enable this helper to reflect API wait state in toolbar UI.
-      // Step A: Toggle a loading class on the toolbar root.
-      // Step B: Update spinner aria-hidden for accessibility.
-      // if (dom.toolbarElement) {
-      //   dom.toolbarElement.classList.toggle('game-toolbar--loading', Boolean(isLoading));
-      // }
-      // if (dom.cpuLoadingIndicator) {
-      //   dom.cpuLoadingIndicator.setAttribute('aria-hidden', isLoading ? 'false' : 'true');
-      // }
+      
+      if (dom.toolbarElement) {
+        dom.toolbarElement.classList.toggle('game-toolbar--loading', Boolean(isLoading));
+      }
+      if (dom.cpuLoadingIndicator) {
+        dom.cpuLoadingIndicator.setAttribute('aria-hidden', isLoading ? 'false' : 'true');
+      }
     }
 
     // Main game controller object.
@@ -167,7 +165,7 @@ export function createBoardController(dom) {
         });
 
         // Blueprint: Call setCpuLoading(true) before sending CPU/API request.
-        // setCpuLoading(true);
+        setCpuLoading(true);
         try {
           const response = await fetch('/api/checkers/2d/cpu-move', {
             method: 'POST',
@@ -225,7 +223,7 @@ export function createBoardController(dom) {
           throw new Error('CPU move API returned invalid move');
         } finally {
           // Blueprint: Always clear loading state in finally to avoid stuck UI.
-          // setCpuLoading(false);
+          setCpuLoading(false);
         }
       },
       // Queue CPU turn execution after a short delay for smoother gameplay.

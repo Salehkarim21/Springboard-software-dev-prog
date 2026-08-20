@@ -125,9 +125,49 @@ app.post('/api/checkers/2d/cpu-move', withThrottle(async (req, res) => {
 	// Step 10.7: Return appropriate error codes/messages for invalid payloads or API failures.
 	// console.log("Hit the CPU move");
 	const { State, legalMoves, difficulty } = req.body;
-	console.log(`State:` , state)
-	console.log(`Game difficulty: ${difficulty}`);
-	return res.json({message: "Hit the cpu move endpoint"});
+
+	if (difficulty === "hard") {
+		return res.status(500).json({ message: "Hard dificulty not implemented yet"});
+	}
+	// console.log(`State:` , state)
+	// console.log(`Game difficulty: ${difficulty}`);
+	if (!isValid2dGameState(state)|| !Array.isArray(legalMoves) || legalMoves.length === 0) {
+		return res.status(400).json({message: "Invalid CPU move payload"});
+	}
+	//  console.log(legalMoves); 
+
+	 const validMoveIds = new Set();
+	 for (const move of legalMoves) {
+		validMoveIds.add(move.moveId);
+	 }
+
+	 try {
+		const resolved = await ({ state, legalMoves, apikey: null});
+		console.log(resolved);
+
+		const chosednMoveId = resolved.moveId;
+
+		if (!validMoveIds.has(chosednMoveId)) {
+			return res.status(500).json({ message: "No valid mpve chosen. Check your imput!"})
+		}
+		return res.status(200).json({ 
+			moveId: chosednMoveId,
+			move: null, // Gemini AI move
+			provider: resolved.provider,
+			fallback: resolved.fallback
+		});
+
+	 } catch (error) {
+		const message = error.message;
+		console.error(
+			`[CPU_API] Failed: statusCode=%d message=%s error%s`,
+			500,
+			message,
+			string(error)
+		);
+
+	 }
+	// return res.json({message: "Hit the cpu move endpoint"});
 }));
 
 app.get('/', (req, res) => {

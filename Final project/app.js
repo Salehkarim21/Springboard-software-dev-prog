@@ -124,7 +124,10 @@ app.post('/api/checkers/2d/cpu-move', withThrottle(async (req, res) => {
 	// Step 10.6: Return the selected move payload to the client.
 	// Step 10.7: Return appropriate error codes/messages for invalid payloads or API failures.
 	// console.log("Hit the CPU move");
-	// res.json({message: "ok"});
+	const { State, legalMoves, difficulty } = req.body;
+	console.log(`State:` , state)
+	console.log(`Game difficulty: ${difficulty}`);
+	return res.json({message: "Hit the cpu move endpoint"});
 }));
 
 app.get('/', (req, res) => {

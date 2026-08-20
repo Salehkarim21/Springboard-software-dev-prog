@@ -72,9 +72,9 @@ export function initializeGame() {
 
     function syncPlayModeControls() {
       const twoPlayerMode = dom.cpuToggle ? dom.cpuToggle.checked : false;
-      Board.cpuEnabled = twoPlayerMode;
+      Board.cpuEnabled = !twoPlayerMode;
       if (dom.cpuDifficultySelect) {
-        dom.cpuDifficultySelect.disabled = !twoPlayerMode;
+        dom.cpuDifficultySelect.disabled = twoPlayerMode;
       }
     }
 
@@ -97,17 +97,29 @@ export function initializeGame() {
 
     if (dom.cpuToggle) {
       // Step 6.1: Initialize CPU/two-player controls from current UI state.
+      syncPlayModeControls();
       dom.cpuToggle.addEventListener('change', function () {
         // Step 6.2: Resync CPU/two-player settings.
         // Step 6.3: If CPU is enabled and it is CPU turn, queue a CPU move.
+        syncPlayModeControls();
+        if (Board.cpuEnabled && Board.playerTurn === 2) {
+          Board.scheduleCpuMove();
+        }
       });
     }
 
     if (dom.cpuDifficultySelect) {
       // Step 6.4: Initialize dropdown from Board.cpuDifficulty.
+      dom.cpuDifficultySelect.value = Board.cpuDifficulty;
       dom.cpuDifficultySelect.addEventListener('change', function (event) {
         // Step 6.5: Update Board.cpuDifficulty from selected value.
         // Step 6.6: If it is CPU turn, schedule move using the new difficulty.
+        console.log(`CPU difficulty should now be ${event.target.value}`);
+        Board.cpuDifficulty = event.target.value === "hard" ? "hard" : "easy";
+
+        if (Board.playerTurn === 2) {
+          Board.scheduleCpuMove();
+        }
       });
     }
 
@@ -173,11 +185,10 @@ export function initializeGame() {
 
     document.addEventListener('click', function (event) {
       const pieceEl = event.target.closest('.piece');
-      if (!pieceEl) { console.log('piece not here');
-        return;
-      }
+      if (!pieceEl) return;
+      
 
-      if (Board.cpuEnabled && Board.playerTurn == 2) return;
+      // if (Board.cpuEnabled && Board.playerTurn == 2) return;
 
       let selected = false;
       const parentClass = pieceEl.parentElement.className.split(' ')[0];
@@ -187,6 +198,7 @@ export function initializeGame() {
         if (!Board.continuousjump && pieces[pieceEl.id].allowedtomove) {
           if (pieceEl.classList.contains('selected')) selected = true;
           clearSelectedPieces();
+        }
           if (!selected) {
             pieceEl.classList.add('selected');
           }
@@ -195,8 +207,6 @@ export function initializeGame() {
           const continuous = 'continuous jump exist, you have to jump the same piece';
           const message = !Board.continuousjump ? exist : continuous;
           console.log(message);
-        }
-        
         }
       });
 

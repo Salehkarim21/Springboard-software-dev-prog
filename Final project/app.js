@@ -6,11 +6,6 @@ import { fileURLToPath } from 'node:url';
 
 import express from 'express';
 import { resolveCpuMove } from './cpu_moves/index.js';
-import {
-	buildLegalMoveIndex,
-	isCoordinateMove,
-	resolveMoveIdFromCoordinates
-} from './api_helpers/cpuMoveHelpers.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;

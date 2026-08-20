@@ -151,7 +151,7 @@ export function initializeGame() {
           clearSelectedPieces();
           syncControlsFromBoardState();
           const saveDate = state.savedAt ? new Date(state.savedAt).toDateString() : "unknown time";
-          setSaveStatus('Resumed saved game from ' + savedDate + '.', false);
+          setSaveStatus('Resumed saved game from ' + saveDate + '.', false);
         } catch (error) {
           console.error(error);
           setSaveStatus("Unable to resume saved game!", true);

@@ -13,7 +13,7 @@ export function Piece(element, position, deps) {
       // Hint:
       // 1) Update the piece sprite to the king image for this.player.
       // 2) Set this.king = true so movement rules allow backward moves.
-      this.element.style.backgroundImage = "url('images/king" + this.player + ".png')";
+      this.element.style.backgroundImage = "url('/images/king" + this.player + ".png')";
       this.king = true;
     };
 

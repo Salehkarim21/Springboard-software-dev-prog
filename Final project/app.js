@@ -123,48 +123,66 @@ app.post('/api/checkers/2d/cpu-move', withThrottle(async (req, res) => {
 	// Step 10.6: Return the selected move payload to the client.
 	// Step 10.7: Return appropriate error codes/messages for invalid payloads or API failures.
 	// console.log("Hit the CPU move");
-	const { State, legalMoves, difficulty } = req.body;
+	const { state, legalMoves, difficulty } = req.body;
 
 	// if (difficulty === "hard") {
 	// 	return res.status(500).json({ message: "Hard dificulty not implemented yet"});
 	// }
 	// console.log(`State:` , state)
 	// console.log(`Game difficulty: ${difficulty}`);
-	if (!isValid2dGameState(state)|| !Array.isArray(legalMoves) || legalMoves.length === 0) {
+	if (!isValid2dGameState(state) || !Array.isArray(legalMoves) || legalMoves.length === 0) {
 		return res.status(400).json({message: "Invalid CPU move payload"});
 	}
 	//  console.log(legalMoves); 
 
-	 const validMoveIds = new Set();
-	 for (const move of legalMoves) {
-		validMoveIds.add(move.moveId);
-	 }
+	 const validMoveIds = new Set(legalMoves.map((move) => move.moveId));
 
 	 try {
-		const resolved = await ({ state, legalMoves, apikey: null});
-		console.log(resolved);
-
-		const chosednMoveId = resolved.moveId;
-
-		if (!validMoveIds.has(chosednMoveId)) {
-			return res.status(500).json({ message: "No valid mpve chosen. Check your imput!"})
-		}
-		return res.status(200).json({ 
-			moveId: chosednMoveId,
-			move: null, // Gemini AI move
-			provider: resolved.provider,
-			fallback: resolved.fallback
+		const resolved = await resolveCpuMove({
+			state,
+			legalMoves,
+			difficulty,
+			apiKey: process.env.GEMINI_API_KEY
 		});
 
+		if (validMoveIds.has(resolved.moveId)) {
+			return res.status(200).json({
+				moveId: resolved.moveId,
+				move: null,
+				provider: resolved.provider,
+				fallback: resolved.fallback
+			});
+		}
+
+		if (resolved.move && Array.isArray(resolved.move.from) && Array.isArray(resolved.move.to)) {
+			const moveId = legalMoves.find((move) =>
+				move.piece?.row === resolved.move.from[0] &&
+				move.piece?.col === resolved.move.from[1] &&
+				move.target?.row === resolved.move.to[0] &&
+				move.target?.col === resolved.move.to[1]
+			)?.moveId;
+
+			if (validMoveIds.has(moveId)) {
+				return res.status(200).json({
+					moveId,
+					move: resolved.move,
+					provider: resolved.provider,
+					fallback: resolved.fallback
+				});
+			}
+		}
+
+		return res.status(500).json({message: "CPU returned a move that is not legal."});
+
 	 } catch (error) {
-		const message = error.message;
+		const message = error instanceof Error ? error.message : String(error);
 		console.error(
-			`[CPU_API] Failed: statusCode=%d message=%s error%s`,
+			`[CPU_API] Failed: statusCode=%d message=%s error=%s`,
 			500,
 			message,
-			string(error)
+			String(error)
 		);
-		return res.status(statusCode).json({ message });
+		return res.status(500).json({ message });
 
 	 }
 	

@@ -32,31 +32,31 @@
         1
       ],
       [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        2,
-        0,
         1,
         0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
         2,
+        0,
+        0
+      ],
+      [
+        2,
+        0,
+        2,
+        0,
+        0,
         0,
         2,
         0
@@ -83,12 +83,12 @@
       ]
     ],
     "score": {
-      "player1": 1,
+      "player1": 0,
       "player2": 0
     },
-    "playerTurn": 2,
-    "cpuEnabled": false,
-    "cpuDifficulty": "hard",
+    "playerTurn": 1,
+    "cpuEnabled": true,
+    "cpuDifficulty": "easy",
     "showCpuAnimation": true,
     "winnerText": "",
     "pieces": [
@@ -159,8 +159,8 @@
       {
         "id": 8,
         "position": [
-          5,
-          2
+          3,
+          0
         ],
         "king": false
       },
@@ -198,14 +198,17 @@
       },
       {
         "id": 13,
-        "position": [],
+        "position": [
+          5,
+          2
+        ],
         "king": false
       },
       {
         "id": 14,
         "position": [
-          5,
-          4
+          4,
+          5
         ],
         "king": false
       },
@@ -282,8 +285,8 @@
         "king": false
       }
     ],
-    "savedAt": "2026-08-20T02:52:54.720Z",
+    "savedAt": "2026-08-20T05:15:54.433Z",
     "version": 1
   },
-  "savedAt": "2026-08-20T02:52:54.437Z"
+  "savedAt": "2026-08-20T05:15:54.410Z"
 }

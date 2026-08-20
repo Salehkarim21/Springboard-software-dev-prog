@@ -41,13 +41,13 @@ function buildPrompt(state) {
     "You are playing a game of Checkers as Black.",
     "Here is the current 8x8 board state where 'B' is Black, 'W' is White, 'BK' is Black King, 'WK' is White King, and '.' is empty.",
     '',
-    boardState,
+    buildBoardString(state),
     '',
     'Suggest the next checkers move for Black.',
     'Return strict JSON only: {"from":[row,col],"to":[row,col]}',
     'Rows and columns are 0-based indices.'
 
-  ].json('\n');
+  ].join('\n');
 }
 
 // Call Gemini with the current board state and return the move coordinates it suggests.

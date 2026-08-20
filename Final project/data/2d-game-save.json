@@ -3,36 +3,16 @@
     "board": [
       [
         0,
-        1,
         0,
-        1,
         0,
-        1,
+        0,
+        0,
+        0,
         0,
         1
       ],
       [
-        1,
         0,
-        1,
-        0,
-        1,
-        0,
-        1,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        1,
-        0,
-        1,
-        0,
-        1
-      ],
-      [
-        1,
         0,
         0,
         0,
@@ -47,74 +27,88 @@
         0,
         0,
         0,
-        2,
+        0,
         0,
         0
       ],
       [
-        2,
-        0,
-        2,
         0,
         0,
         0,
-        2,
+        0,
+        1,
+        0,
+        0,
         0
       ],
       [
         0,
-        2,
+        1,
         0,
-        2,
         0,
-        2,
         0,
-        2
+        0,
+        0,
+        0
       ],
       [
-        2,
         0,
-        2,
         0,
-        2,
         0,
-        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
         0
       ]
     ],
     "score": {
-      "player1": 0,
-      "player2": 0
+      "player1": 12,
+      "player2": 8
     },
-    "playerTurn": 1,
+    "playerTurn": 2,
     "cpuEnabled": true,
-    "cpuDifficulty": "easy",
+    "cpuDifficulty": "hard",
     "showCpuAnimation": true,
-    "winnerText": "",
+    "winnerText": "Player 1 has won!",
     "pieces": [
       {
         "id": 0,
-        "position": [
-          0,
-          1
-        ],
+        "position": [],
         "king": false
       },
       {
         "id": 1,
-        "position": [
-          0,
-          3
-        ],
+        "position": [],
         "king": false
       },
       {
         "id": 2,
         "position": [
-          0,
-          5
+          3,
+          4
         ],
-        "king": false
+        "king": true
       },
       {
         "id": 3,
@@ -127,166 +121,112 @@
       {
         "id": 4,
         "position": [
-          1,
-          0
-        ],
-        "king": false
-      },
-      {
-        "id": 5,
-        "position": [
-          1,
-          2
-        ],
-        "king": false
-      },
-      {
-        "id": 6,
-        "position": [
-          1,
-          4
-        ],
-        "king": false
-      },
-      {
-        "id": 7,
-        "position": [
-          1,
-          6
-        ],
-        "king": false
-      },
-      {
-        "id": 8,
-        "position": [
-          3,
-          0
-        ],
-        "king": false
-      },
-      {
-        "id": 9,
-        "position": [
-          2,
-          3
-        ],
-        "king": false
-      },
-      {
-        "id": 10,
-        "position": [
-          2,
-          5
-        ],
-        "king": false
-      },
-      {
-        "id": 11,
-        "position": [
-          2,
-          7
-        ],
-        "king": false
-      },
-      {
-        "id": 12,
-        "position": [
-          5,
-          0
-        ],
-        "king": false
-      },
-      {
-        "id": 13,
-        "position": [
-          5,
-          2
-        ],
-        "king": false
-      },
-      {
-        "id": 14,
-        "position": [
           4,
-          5
-        ],
-        "king": false
-      },
-      {
-        "id": 15,
-        "position": [
-          5,
-          6
-        ],
-        "king": false
-      },
-      {
-        "id": 16,
-        "position": [
-          6,
           1
         ],
         "king": false
       },
       {
-        "id": 17,
-        "position": [
-          6,
-          3
-        ],
+        "id": 5,
+        "position": [],
         "king": false
       },
       {
-        "id": 18,
-        "position": [
-          6,
-          5
-        ],
+        "id": 6,
+        "position": [],
+        "king": true
+      },
+      {
+        "id": 7,
+        "position": [],
         "king": false
       },
       {
-        "id": 19,
-        "position": [
-          6,
-          7
-        ],
+        "id": 8,
+        "position": [],
         "king": false
       },
       {
-        "id": 20,
-        "position": [
-          7,
-          0
-        ],
-        "king": false
-      },
-      {
-        "id": 21,
+        "id": 9,
         "position": [
           7,
           2
         ],
+        "king": true
+      },
+      {
+        "id": 10,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 11,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 12,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 13,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 14,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 15,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 16,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 17,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 18,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 19,
+        "position": [],
+        "king": true
+      },
+      {
+        "id": 20,
+        "position": [],
+        "king": false
+      },
+      {
+        "id": 21,
+        "position": [],
         "king": false
       },
       {
         "id": 22,
-        "position": [
-          7,
-          4
-        ],
+        "position": [],
         "king": false
       },
       {
         "id": 23,
-        "position": [
-          7,
-          6
-        ],
+        "position": [],
         "king": false
       }
     ],
-    "savedAt": "2026-08-20T05:15:54.433Z",
+    "savedAt": "2026-08-20T05:39:20.956Z",
     "version": 1
   },
-  "savedAt": "2026-08-20T05:15:54.410Z"
+  "savedAt": "2026-08-20T05:39:21.406Z"
 }

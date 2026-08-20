@@ -17,7 +17,7 @@ export async function resolveCpuMove({ state, legalMoves, difficulty, apiKey }) 
   }
 
   try {
-    const move = await chooseGeminiMove({ state, legalMoves, apiKey });
+    const move = await chooseGeminiMove({ state, legalMoves, difficulty, apiKey });
     if (!move || !Array.isArray(move.from) || !Array.isArray(move.to)) {
       throw new Error('Gemini did not return a valid move object.');
     }

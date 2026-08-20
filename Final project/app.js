@@ -139,11 +139,7 @@ app.post('/api/checkers/2d/cpu-move', withThrottle(async (req, res) => {
 
 	 try {
 		const resolved = await resolveCpuMove({
-			state,
-			legalMoves,
-			difficulty,
-			apiKey: process.env.GEMINI_API_KEY
-		});
+			state, legalMoves, difficulty, apiKey: process.env.GEMINI_API_KEY});
 
 		if (validMoveIds.has(resolved.moveId)) {
 			return res.status(200).json({

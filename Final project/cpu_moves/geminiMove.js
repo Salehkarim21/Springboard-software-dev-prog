@@ -30,7 +30,7 @@ function buildBoardString(state) {
 }
 
 // Build the plain-language prompt that asks Gemini for the next black move.
-function buildPrompt(state) {
+function buildPrompt(state, legalMoves) {
   // Step 1: Convert the current board state into a readable board string.
   // Step 2: Write a prompt that tells Gemini it is playing as Black.
   // Step 3: Include the board string in the prompt so Gemini can see the current position.
@@ -43,6 +43,8 @@ function buildPrompt(state) {
     '',
     buildBoardString(state),
     '',
+    'Legal moves are listed below. Choose exactly one of these moves:',
+    JSON.stringify(legalMoves),
     'Suggest the next checkers move for Black.',
     'Return strict JSON only: {"from":[row,col],"to":[row,col]}',
     'Rows and columns are 0-based indices.'
@@ -51,17 +53,24 @@ function buildPrompt(state) {
 }
 
 // Call Gemini with the current board state and return the move coordinates it suggests.
-export async function chooseGeminiMove({ state, legalMoves, apiKey }) {
+export async function chooseGeminiMove({ state, legalMoves, difficulty, apiKey }) {
+  if (difficulty !== 'hard') {
+    throw new Error('Gemini is available only in hard mode.');
+  }
   if (!apiKey) {
     throw new Error('GEMINI_API_KEY is not configured.');
   }
-  const prompt = buildPrompt(state);
+  const prompt = buildPrompt(state, legalMoves);
   try {
     const ai = new GoogleGenAI({apiKey: apiKey});
+    console.log('[GEMINI] Hard mode: requesting move from Gemini.');
     console.log('GEMINI PROMPT:\n', prompt);
     const response = await ai.models.generateContent({
       model: 'gemini-3.1-flash-lite-preview',
       contents: prompt,
+      config: {
+        responseMimeType: 'application/json'
+      }
     });
     console.log(`Gemini response: ${JSON.stringify(response)}`);
     const nextMoveResponseText = response.candidates?.[0]?.content?.parts?.[0]?.text;
